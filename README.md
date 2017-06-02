@@ -15,6 +15,23 @@ const x = match('foo')
 
 // x === 'FOOBAR'
 ```
+### RegExp matching
+Apply and get regular expression capture group matches in one go:
+
+```javascript
+const inputUrl = "http://eat-frog.io/dishes/parmigiana-di-rana"
+
+const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
+  .case(/^https:\/\//)
+    .then(url => url)
+  .case(/^http:\/\/(.*)/)
+    .then((url, _, [, noprotocol]) => 'https://' + noprotocol)
+  .case(/^\//)
+    .then(url => 'https://' + DOMAIN + url)
+  .default(url => url)
+
+// httpsUrl === "https://eat-frog.io/dishes/parmigiana-di-rana"
+```
 
 ## API
 
@@ -23,21 +40,21 @@ const x = match('foo')
   The *value* to be matched against the subsequent *case*s.  
 **`comparisonFunction`**`: (value, caseValue) => any` (*optional*)  
    Defaults to strict equality (`===`).  
-   It is passed the initial value as first argument and the comparing value second. If its result is truthy, then the initial value is interpreted as matching the comparing value.  
+   It is passed the initial value as first argument and the comparing value as second. If its result is truthy, then the initial value is interpreted as matching the comparing value.  
    Its result with the matching value is used a the third argument to the matching `then` clause.  
-   Once a value has matched, it's not called anymore.  
+   Once a value has matched, the comparison function is not called anymore.  
 **Returns**`: { case }`  
    An object with a `.case` method.
 
 ### `.case(comparisonValue, ...)`
 **`comparisonValue`**`: any|[any]`  
   The value(s) to compare with the initial value provided to `match`.  
-**Returns**`: { then }`  
-   An object with a `.then` method.  
+**Returns**`: { then, case }`  
+   An object with `.then` and `.case` methods.  
   
 ### `.case(...).then(callback)`
 **`callback`**`: (value, matchedValue, comparisonFunctionResult) => any`  
-  It's executed only if a previous `case` clause matched, in which case its return value will be used as the return value of the match expression.  
+  Executed only if a previous `case` clause matched, in which case its return value will be used as the return value of the match expression.  
   The first argument is the initial value, the second is the matching *case* value, the third one is the result of the call to the comparison function with the two previous arguments (defaults to `true` if no custom `comparisonFunction` was provided).
 **Returns**`: [Callable: () => result]{ case, default }`  
   A callable object with `.case` and `.default` methods.  
@@ -45,25 +62,7 @@ const x = match('foo')
   
 ### `.then(...).default(callback)`
 **`callback`**`: (value) => any`  
-  It's executed only if no previous `case` clause matched, in which case its return value will be used as the return value of the match expression. 
+  Executed only if no previous `case` clause matched, in which case its return value will be used as the return value of the match expression. 
   The first argument is the initial value.
   
-## Examples
-
-### RegExp matching
-Apply and get regular expression capture group matches in one go:
-
-```javascript
-match("http://eat-frog.io/dishes/parmigiana-di-rana")
-  .case(/^https:\/\//)
-    .then(url => url)
-  .case(/http:\/\/(.*)/)
-    .then((url, _, [, noprotocol]) => 'https://' + noprotocol)
-  .case(/^\//)
-    .then(url => 'https://' + DOMAIN + url)
-  .default(url => url)
-
-// => "https://eat-frog.io/dishes/parmigiana-di-rana"
-```
-
 * Checkout [test.js](`test.js`) for an exhaustive spec.

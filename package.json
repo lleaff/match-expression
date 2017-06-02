@@ -1,6 +1,6 @@
 {
   "name": "match-expression",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "Match/switch expression in method chaining style",
   "main": "index.js",
   "scripts": {
