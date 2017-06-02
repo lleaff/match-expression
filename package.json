@@ -1,0 +1,32 @@
+{
+  "name": "match-expression",
+  "version": "1.0.0",
+  "description": "Match/switch expression in method chaining style",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lleaff/match-expression.git"
+  },
+  "author": "lleaff",
+  "license": "MIT",
+  "keywords": [
+    "match expression",
+    "switch expression",
+    "match",
+    "switch",
+    "fp"
+  ],
+  "bugs": {
+    "url": "https://github.com/lleaff/match-expression/issues"
+  },
+  "homepage": "https://github.com/lleaff/match-expression#readme",
+  "devDependencies": {
+    "jest": "^20.0.4"
+  },
+  "jest": {
+    "transform": {}
+  }
+}
