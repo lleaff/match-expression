@@ -15,22 +15,31 @@ const x = match('foo')
 
 // x === 'FOOBAR'
 ```
-### RegExp matching
+### Custom comparison callback
+
 Apply and get regular expression capture group matches in one go:
 
 ```javascript
-const inputUrl = "http://eat-frog.io/dishes/parmigiana-di-rana"
+const inputUrl = "http://eat-frogs.io/dishes/parmigiana-di-rana"
 
 const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
-  .case(/^https:\/\//)
-    .then(url => url)
   .case(/^http:\/\/(.*)/)
-    .then((url, _, [, noprotocol]) => 'https://' + noprotocol)
+    .then((url, _, [, noprotocol]) => `https://${noprotocol}`)
   .case(/^\//)
-    .then(url => 'https://' + DOMAIN + url)
+    .then(url => `https://${DOMAIN}${url}`)
   .default(url => url)
 
-// httpsUrl === "https://eat-frog.io/dishes/parmigiana-di-rana"
+// httpsUrl === "https://eat-frogs.io/dishes/parmigiana-di-rana"
+```
+
+### No default clause
+
+Execute the function returned by `then` to resolve to a value without having a `default` clause.
+
+```javascript
+match(person.type)
+  .case('HUMAN').then(() => greet(person))
+  .case('NOT_HUMAN').then(() => eat(person))()
 ```
 
 ## API
@@ -47,12 +56,14 @@ const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
    An object with a `.case` method.
 
 ### `.case(comparisonValue, ...)`
+Available after `match` and `case` clauses.  
 **`comparisonValue`**`: any|[any]`  
   The value(s) to compare with the initial value provided to `match`.  
 **Returns**`: { then, case }`  
    An object with `.then` and `.case` methods.  
   
-### `.case(...).then(callback)`
+### `.then(callback)`
+Available after `case` clauses.  
 **`callback`**`: (value, matchedValue, comparisonFunctionResult) => any`  
   Executed only if a previous `case` clause matched, in which case its return value will be used as the return value of the match expression.  
   The first argument is the initial value, the second is the matching *case* value, the third one is the result of the call to the comparison function with the two previous arguments (defaults to `true` if no custom `comparisonFunction` was provided).
@@ -60,9 +71,10 @@ const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
   A callable object with `.case` and `.default` methods.  
   The function can be called to resolve the match directly, without a "`default`" clause.
   
-### `.then(...).default(callback)`
+### `.default(callback)`
+Available after `then` clauses.  
 **`callback`**`: (value) => any`  
   Executed only if no previous `case` clause matched, in which case its return value will be used as the return value of the match expression. 
   The first argument is the initial value.
   
-* Checkout [test.js](`test.js`) for an exhaustive spec.
+* Checkout [`test.js`](test.js) for an exhaustive spec.
