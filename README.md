@@ -55,15 +55,15 @@ match(person.type)
 **Returns**`: { case }`  
    An object with a `.case` method.
 
-### `.case(comparisonValue, ...)`
-Available after `match` and `case` clauses.  
-**`comparisonValue`**`: any|[any]`  
-  The value(s) to compare with the initial value provided to `match`.  
+### `.case( comparisonValue [, ...] )`
+_Available after `match` and `case` clauses._  
+**`comparisonValue`**`: any`  
+  The value(s) to compare with the initial value provided to `match`. The actual matched value will be passed as second argument to `then` handler.  
 **Returns**`: { then, case }`  
    An object with `.then` and `.case` methods.  
   
-### `.then(callback)`
-Available after `case` clauses.  
+### `.then( callback )`
+_Available after `case` clauses._  
 **`callback`**`: (value, matchedValue, comparisonFunctionResult) => any`  
   Executed only if a previous `case` clause matched, in which case its return value will be used as the return value of the match expression.  
   The first argument is the initial value, the second is the matching *case* value, the third one is the result of the call to the comparison function with the two previous arguments (defaults to `true` if no custom `comparisonFunction` was provided).
@@ -71,10 +71,11 @@ Available after `case` clauses.
   A callable object with `.case` and `.default` methods.  
   The function can be called to resolve the match directly, without a "`default`" clause.
   
-### `.default(callback)`
-Available after `then` clauses.  
+### `.default( callback )`
+_Available after `then` clauses._  
 **`callback`**`: (value) => any`  
   Executed only if no previous `case` clause matched, in which case its return value will be used as the return value of the match expression. 
   The first argument is the initial value.
   
+
 * Checkout [`test.js`](test.js) for an exhaustive spec.
