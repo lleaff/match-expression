@@ -1,5 +1,6 @@
 # Match expression
 [![npm](https://img.shields.io/npm/v/match-expression.svg)](https://www.npmjs.com/package/match-expression)
+[![Build Status](https://travis-ci.org/lleaff/match-expression.svg?branch=master)](https://travis-ci.org/lleaff/match-expression)
 
 A flexible switch/match expression utility for Javascript.
 
@@ -66,7 +67,7 @@ _Available after `match` and `case` clauses._
 _Available after `case` clauses._  
 **`callback`**`: (value, matchedValue, comparisonFunctionResult) => any`  
   Executed only if a previous `case` clause matched, in which case its return value will be used as the return value of the match expression.  
-  The first argument is the initial value, the second is the matching *case* value, the third one is the result of the call to the comparison function with the two previous arguments (defaults to `true` if no custom `comparisonFunction` was provided).
+  The first argument is the initial value, the second is the matching *case* value, the third one is the result of the call to the comparison function with the two previous arguments (defaults to `true` if no custom `comparisonFunction` was provided).  
 **Returns**`: [Callable: () => result]{ case, default }`  
   A callable object with `.case` and `.default` methods.  
   The function can be called to resolve the match directly, without a "`default`" clause.
@@ -75,7 +76,15 @@ _Available after `case` clauses._
 _Available after `then` clauses._  
 **`callback`**`: (value) => any`  
   Executed only if no previous `case` clause matched, in which case its return value will be used as the return value of the match expression. 
-  The first argument is the initial value.
+  The first argument is the initial value.  
+**Returns**`: any`  
+  Returns resolved value from `then` clause callback corresponding to the matched `case` clause, or from its own callback if no `case` matched.
   
+## Notes
 
-* Checkout [`test.js`](test.js) for an exhaustive spec.
+* Checkout [`./test.js`](test.js) for an exhaustive spec.
+* Before writing this package I wasn't particularly fond of the builder-style API, so I wrote another match expression module that had a more data-oriented API. The configuration was made through a big array passed to `match`:  
+  `match: (value, [ ...cases, default ])`  
+  where `cases: [ [ ...caseValues, callback ] ]` and `default: [ callback ]`.  
+  Turns out that it's very unreadable for anything non-trivial. So in case the builder style API is an initial turn off for you, put yourself in the shoes of someone reading your code: the _case_, _then_ and _default_ visual keywords are very helpful in making the code more understandable.
+* Related: [if-exp](https://www.npmjs.com/package/if-exp)
