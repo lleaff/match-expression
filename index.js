@@ -1,6 +1,6 @@
-function strictEquality(a, b) { return a === b }
+function strictEqualityCmp(a, b) { return a === b }
 
-function match(value, cmp=strictEquality, result) {
+function matchExpr(value, cmp=strictEqualityCmp, result) {
   function getCaseExpr(matched) {
     return function caseExpr(...cmpValues) {
       if (!result && !matched) {
@@ -21,13 +21,13 @@ function match(value, cmp=strictEquality, result) {
           function resolve() {
             return result
           }
-          resolve.case = match(value, cmp, result).case
+          resolve.case = matchExpr(value, cmp, result).case
           resolve.default = (cb) => result ? result : cb(value)
           return resolve
         },
       }
     }
-    caseExpr.then = () => match(value, cmp, result)
+    caseExpr.then = () => matchExpr(value, cmp, result)
   }
 
   return {
@@ -35,4 +35,6 @@ function match(value, cmp=strictEquality, result) {
   }
 }
 
-module.exports = match
+module.exports = function match(value, cmp) {
+  return matchExpr(value, cmp)
+}
