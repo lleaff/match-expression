@@ -7,23 +7,27 @@ A flexible switch/match expression utility for Javascript.
 ```javascript
 import match from 'match-expression'
 
-const x = match('foo')
+const x = match('bar')
   .case('foo')
+    .then(() => 'FOO')
   .case('bar')
-    .then(() => 'FOOBAR')
   .case('baz')
-    .then(() => 'BAZ')
+    .then(() => 'BARBAZ')
+  .default(() => 'DEFAULT)')
 
-// x === 'FOOBAR'
+// x === 'BARBAZ'
 ```
-### Custom comparison callback
+
+### Custom comparison function
 
 Apply and get regular expression capture group matches in one go:
 
 ```javascript
 const inputUrl = "http://eat-frogs.io/dishes/parmigiana-di-rana"
 
-const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
+function regexMatch(str, regex) { return regex.exec(str) }
+
+const httpsUrl = match(inputUrl, regexMatch)
   .case(/^http:\/\/(.*)/)
     .then((url, _, [, noprotocol]) => `https://${noprotocol}`)
   .case(/^\//)
@@ -35,13 +39,15 @@ const httpsUrl = match(inputUrl, (str, regex) => regex.exec(str))
 
 ### No default clause
 
-Execute the function returned by `then` to resolve to a value without having a `default` clause.
+Execute the function returned by `then` to resolve to a value without having to use a `default` clause.
 
 ```javascript
 match(person.type)
   .case('HUMAN').then(() => greet(person))
   .case('NOT_HUMAN').then(() => eat(person))()
 ```
+
+### [Interactive examples](https://npm.runkit.com/match-expression)
 
 ## API
 

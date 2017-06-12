@@ -1,10 +1,13 @@
 {
   "name": "match-expression",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Match/switch expression in method chaining style",
   "main": "index.js",
   "scripts": {
     "test": "jest test.js"
+  },
+  "engines": {
+    "node": ">=6"
   },
   "repository": {
     "type": "git",
@@ -23,6 +26,7 @@
     "url": "https://github.com/lleaff/match-expression/issues"
   },
   "homepage": "https://github.com/lleaff/match-expression#readme",
+  "runkitExampleFilename": "example.js",
   "devDependencies": {
     "jest": "^20.0.4"
   },
