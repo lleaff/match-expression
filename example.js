@@ -21,13 +21,13 @@ let userName = 'carla'
 const genderResolution = match(userName, (name, test) => name.match(test))
   // You can also pass multiple arguments to a single .case. In both cases, the
   // second argument passed to .then will be the value that caused the match.
+  .case(/la$/)
+    .then((name, matched) =>
+      `User ${name} was determined to be female (name matched ${matched}).`)
   .case(...maleNames)
   .case(/li$/)
     .then((name, matched) =>
       `User ${name} was determined to be male (name matched ${matched}).`)
-  .case(/la$/)
-    .then((name, matched) =>
-      `User ${name} was determined to be female (name matched ${matched}).`)
   .default((name) => `User ${name} is of unknown gender.`)
 
 console.log(genderResolution)
