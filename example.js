@@ -8,7 +8,7 @@ const a = match('bar')
   .case('bar')
   .case('baz') 
     .then(() => 'BARBAZ')
-  .default(() => 'DEFAULT)')
+  .default(() => 'DEFAULT')
 
 console.log(a)
 
