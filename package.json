@@ -1,9 +1,12 @@
 {
   "name": "match-expression",
-  "version": "1.1.31",
-  "description": "Match/switch expression in method chaining style",
-  "main": "index.js",
+  "version": "1.2.1",
+  "description": "Switch/match expression in method chaining style",
+  "main": "dist.js",
   "scripts": {
+    "start": "npm run build:watch",
+    "build": "babel match-expression.js --out-file dist.js",
+    "build:watch": "npm run build -- --watch",
     "test": "jest test.js"
   },
   "engines": {
@@ -28,9 +31,16 @@
   "homepage": "https://github.com/lleaff/match-expression#readme",
   "runkitExampleFilename": "example.js",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "jest": "^20.0.4"
   },
   "jest": {
     "transform": {}
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

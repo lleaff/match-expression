@@ -1,4 +1,4 @@
-const match = require('./index.js')
+const match = require('./dist.js')
 
 it(`Matches a value against a series of values`, () => {
   const matcher = val => match(val)
